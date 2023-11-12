@@ -96,9 +96,9 @@ body {
   margin: 0;
   font-family: 'Montserrat', sans-serif;
   font-size: 1.25rem;
-  font-weight: 700; /* for demo only */
-  text-transform: uppercase; /* for demo only */
-  min-height: 300vh; /* for demo only */
+  /*font-weight: 700; /* for demo only */
+  /*text-transform: uppercase; /* for demo only */
+  /*min-height: 300vh; /* for demo only */
 }
 
 table {
