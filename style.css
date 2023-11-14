@@ -180,6 +180,7 @@ p {
   grid-area: stack;
   animation: parallax ease-in-out;
   animation-timeline: scroll();
+  width: 100vw;
 }
 
 .primary-header,
@@ -226,6 +227,7 @@ p {
 .parallax__foreground-back {
   z-index: 999;
   align-self: end;
+  width: 100vw;
 }
 
 .parallax__foreground-back {
