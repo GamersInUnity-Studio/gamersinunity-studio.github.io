@@ -1,4 +1,4 @@
-# Gamers In Unity Studio
+# GamersInUnity Studio
 
 ### Source to our current website
 
