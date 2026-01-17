@@ -39,18 +39,21 @@ function initParticles() {
 function initMobileMenu() {
     const burger = document.getElementById('burger');
     const nav = document.querySelector('.primary-nav');
+    const body = document.body;
 
     if (!burger || !nav) return;
 
     burger.addEventListener('click', function() {
         burger.classList.toggle('active');
         nav.classList.toggle('active');
+        body.style.overflow = nav.classList.contains('active') ? 'hidden' : '';
     });
 
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', function() {
             burger.classList.remove('active');
             nav.classList.remove('active');
+            body.style.overflow = '';
         });
     });
 
@@ -58,6 +61,7 @@ function initMobileMenu() {
         if (!burger.contains(e.target) && !nav.contains(e.target)) {
             burger.classList.remove('active');
             nav.classList.remove('active');
+            body.style.overflow = '';
         }
     });
 }

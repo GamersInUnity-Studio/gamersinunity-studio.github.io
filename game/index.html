@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asteroids - GamersInUnity Studio</title>
+    <link rel="canonical" href="https://gamersinunity-studio.github.io/game/" />
+    <link rel="icon" href="/assets/GIU.jpg" />
+    <meta name="theme-color" content="#1e1e2e" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta
+      name="description"
+      content="Asteroids - An arcade space shooter. Destroy asteroids and survive the void!"
+    />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body>
+    <div class="loading-screen" id="loadingScreen">
+      <h2>Loading Game...</h2>
+      <div class="loading-bar">
+        <div class="loading-bar-fill" id="loadingFill"></div>
+      </div>
+    </div>
+
+    <div class="game-header">
+      <h1 id="gameTitle">ASTEROIDS</h1>
+      <div class="game-stats">
+        <span>Score: <span id="currentScore">0</span></span>
+        <span>High: <span id="highScore">0</span></span>
+        <span class="lives">Lives: <span id="lives">3</span></span>
+      </div>
+    </div>
+
+    <canvas id="gameCanvas" width="800" height="500"></canvas>
+
+    <div class="level-text" id="levelText">LEVEL 1</div>
+
+    <div class="game-over-screen" id="gameOverScreen">
+      <h2>GAME OVER</h2>
+      <div class="final-score" id="finalScore">0</div>
+      <p id="newHighScoreText"></p>
+      <button class="game-btn" onclick="restartGame()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M23 4v6h-6"/>
+          <path d="M1 20v-6h6"/>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+        </svg>
+        PLAY AGAIN
+      </button>
+      <br>
+      <a href="/404.html" class="back-btn">Back to 404</a>
+    </div>
+
+    <div class="instructions">
+      ARROW KEYS / WASD to move &nbsp;|&nbsp; SPACE to shoot &nbsp;|&nbsp; SHIFT to brake
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

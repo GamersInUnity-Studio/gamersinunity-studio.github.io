@@ -1,0 +1,82 @@
+{
+  "game": {
+    "title": "ASTEROIDS",
+    "description": "An arcade space shooter. Destroy asteroids and survive the void!",
+    "canvas": {
+      "width": 800,
+      "height": 500
+    }
+  },
+  "ship": {
+    "radius": 15,
+    "angle": -1.5708,
+    "rotationSpeed": 0.08,
+    "thrust": 0.15,
+    "friction": 0.99,
+    "invincibilityDuration": 180,
+    "blinkRate": 5
+  },
+  "bullet": {
+    "speed": 10,
+    "lifetime": 60,
+    "cooldown": 200,
+    "radius": 3
+  },
+  "asteroids": {
+    "sizes": {
+      "large": {
+        "radius": 40,
+        "speed": 1.5,
+        "points": 20,
+        "fragments": 2
+      },
+      "medium": {
+        "radius": 25,
+        "speed": 2,
+        "points": 50,
+        "fragments": 2
+      },
+      "small": {
+        "radius": 15,
+        "speed": 2.5,
+        "points": 100,
+        "fragments": 0
+      }
+    },
+    "minVertices": 8,
+    "maxVertices": 12,
+    "vertexVariance": {
+      "min": 0.7,
+      "max": 1.3
+    },
+    "rotationSpeed": {
+      "min": -0.025,
+      "max": 0.025
+    },
+    "initialCount": 3,
+    "spawnDistance": 150
+  },
+  "particles": {
+    "count": 10,
+    "lifetime": 30,
+    "size": {
+      "min": 2,
+      "max": 4
+    },
+    "speed": 4
+  },
+  "lives": {
+    "initial": 3,
+    "explosionCount": 20
+  },
+  "levels": {
+    "difficultyMultiplier": 1,
+    "levelTransitionDuration": 2000
+  },
+  "stars": {
+    "count": 50,
+    "twinkleSpeed": 10,
+    "baseOpacity": 0.2,
+    "maxOpacity": 0.4
+  }
+}
