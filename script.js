@@ -23,11 +23,19 @@
         'konami': () => console.log('%c⬆️ ⬆️ ⬇️ ⬇️ ⬅️ ➡️ ⬅️ ➡️ 🅱️ 🅰️', 'font-size: 20px; color: #a6e3a1;'),
         'help': () => {
             console.log('%c🕹️ Secret Commands:', 'font-weight: bold; color: #cba6f7;');
-            console.log('  swarn, giu, rickroll, 42, konami, help');
+            console.log('  swarn, giu, rickroll, 42, konami, achievement, help');
         }
     };
 
     window.ciu = function(cmd) {
+        if (cmd === 'achievement') {
+            if (getCookie('consoleExplorerAchievement') === 'true') {
+                console.log('%c🏆 Achievement already unlocked! Come back tomorrow!', 'color: #f38ba8;');
+            } else {
+                showAchievementNotification();
+            }
+            return;
+        }
         if (secretCommands[cmd]) {
             secretCommands[cmd]();
         } else {
@@ -36,6 +44,98 @@
     };
 
     console.log('%c💡 Tip: Type ciu("help") for secret commands!', 'color: #94e2d5; font-style: italic;');
+
+    function getCookie(name) {
+        try {
+            const nameEQ = name + '=';
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+                if (cookie.indexOf(nameEQ) === 0) {
+                    return cookie.substring(nameEQ.length);
+                }
+            }
+        } catch (e) {}
+        return null;
+    }
+
+    function setCookie(name, value, days) {
+        try {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = name + '=' + value + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+        } catch (e) {}
+    }
+
+    const achievementShown = getCookie('consoleExplorerAchievement') === 'true';
+
+    function showAchievementNotification() {
+        if (achievementShown) return;
+
+        setCookie('consoleExplorerAchievement', 'true', 365);
+
+        const notification = document.createElement('div');
+        notification.className = 'achievement-notification';
+        notification.innerHTML = `
+            <div class="achievement-icon">🏆</div>
+            <div class="achievement-content">
+                <div class="achievement-title">Achievement Unlocked</div>
+                <div class="achievement-name">Console Explorer</div>
+                <div class="achievement-subtitle">You found the developer tools!</div>
+            </div>
+        `;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 100);
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 500);
+        }, 5000);
+    }
+
+    let devToolsDetected = false;
+
+    function detectDevTools() {
+        if (devToolsDetected || achievementShown) return;
+        devToolsDetected = true;
+        showAchievementNotification();
+    }
+
+    const threshold = 170;
+    setInterval(() => {
+        if (window.outerHeight - window.innerHeight > threshold || window.outerWidth - window.innerWidth > threshold) {
+            detectDevTools();
+        }
+    }, 500);
+
+    if (typeof window !== 'undefined') {
+        const originalOnerror = window.onerror;
+        window.onerror = function(msg, url, line, col, error) {
+            detectDevTools();
+            if (originalOnerror) return originalOnerror(msg, url, line, col, error);
+        };
+    }
+
+    const consoleProxy = new Proxy({}, {
+        get(target, prop) {
+            if (prop === 'log' || prop === 'warn' || prop === 'error' || prop === 'info' || prop === 'debug') {
+                return function(...args) {
+                    detectDevTools();
+                    return console[prop](...args);
+                };
+            }
+            return console[prop];
+        }
+    });
+
+    try {
+        console.log('%c🚀 Achievement Unlocked: Console Explorer! 🏆', 'font-size: 16px; color: #66c0f4; font-weight: bold;');
+    } catch (e) {}
 })();
 
 document.addEventListener("DOMContentLoaded", function() {

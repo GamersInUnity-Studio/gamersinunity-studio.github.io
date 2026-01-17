@@ -1,5 +1,67 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
+.achievement-notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
+  border: 2px solid #66c0f4;
+  border-radius: 4px;
+  padding: 12px 16px;
+  color: #c7d5e0;
+  font-family: 'Motiva Sans', sans-serif;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 20px rgba(102, 192, 244, 0.3);
+  transform: translateX(400px);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  max-width: 320px;
+}
+
+.achievement-notification.show {
+  transform: translateX(0);
+}
+
+.achievement-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #cba6f7, #f5c2e7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.achievement-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.achievement-title {
+  font-size: 11px;
+  color: #66c0f4;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.achievement-name {
+  font-size: 15px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.achievement-subtitle {
+  font-size: 12px;
+  color: #8f98a0;
+  margin-top: 4px;
+}
+
 .particles {
   position: fixed;
   top: 0;
