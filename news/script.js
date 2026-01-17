@@ -3,7 +3,7 @@ async function loadNewsPosts() {
 
   try {
     console.log('Fetching posts...');
-    const response = await fetch('posts.json');
+    const response = await fetch('/news/posts.json');
     if (!response.ok) throw new Error('Failed to load posts index');
 
     const postFiles = await response.json();
@@ -12,7 +12,7 @@ async function loadNewsPosts() {
     const posts = [];
     for (const file of postFiles) {
       try {
-        const postResponse = await fetch('posts/' + file);
+        const postResponse = await fetch('/news/posts/' + file);
         if (postResponse.ok) {
           const content = await postResponse.text();
           const post = parseMarkdown(content);
