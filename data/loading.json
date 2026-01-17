@@ -1,32 +1,5 @@
 {
   "loadingMessages": [
-    "Summoning pixels...",
-    "Compiling awesomeness...",
-    "Loading cheats...",
-    "Respawning...",
-    "Spawning NPCs...",
-    "Optimizing shaders...",
-    "Distributing loot...",
-    "Calibrating joysticks...",
-    "Installing fun...",
-    "Polishing gems...",
-    "Press I on the 404 page for a surprise...",
-    "\"The cake is a lie...\" - Portal",
-    "\"It's-a me, Mario!\" - Nintendo",
-    "\"Would you kindly?\" - BioShock",
-    "\"The soul of a hero...\" - Darksouls",
-    "\"Keep it secret, keep it safe.\" - LOTR",
-    "\"Do a barrel roll!\" - Star Fox",
-    "\"It's dangerous to go alone!\" - Zelda",
-    "\"Could use a worthy adversary.\" - Doom",
-    "\"We've got hostiles!\" - Halo",
-    "\"The right man in the wrong place...\" - Half-Life 2",
-    "\"Wake up, Neo...\" - Matrix",
-    "\"All your base are belong to us\" - Zero Wing",
-    "\"Time to kick ass and chew bubblegum...\" - Duke Nukem",
-    "\"Finest hour!\" - Command & Conquer",
-    "\"God's in his heaven. All's right with the world.\" - Bioshock",
-    "\"Space. The final frontier.\" - Star Trek"
-  ],
-  "easterEggHint": "Press I on our 404 page for a surprise..."
+    "Press I on the 404 page for a surprise..."
+  ]
 }

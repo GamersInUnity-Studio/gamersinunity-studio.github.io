@@ -630,7 +630,7 @@ async function initGame() {
     setTimeout(() => {
       loadingScreen.style.display = 'none';
       game = new AsteroidsGame(config);
-    }, 300);
+    }, 200);
 
   } catch (error) {
     console.error('Failed to load game configuration:', error);

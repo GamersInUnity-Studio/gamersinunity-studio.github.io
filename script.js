@@ -46,40 +46,9 @@ document.addEventListener("DOMContentLoaded", function() {
     initTypingEffect();
 });
 
-let loadingMessages = [
-    "Summoning pixels...",
-    "Compiling awesomeness...",
-    "Loading cheats...",
-    "Respawning...",
-    "Spawning NPCs...",
-    "Optimizing shaders...",
-    "Distributing loot...",
-    "Calibrating joysticks...",
-    "Installing fun...",
-    "Polishing gems..."
-];
-
-async function initLoadingScreen() {
+function initLoadingScreen() {
     const loadingScreen = document.getElementById('loadingScreen');
     if (!loadingScreen) return;
-
-    try {
-        const response = await fetch('data/loading.json');
-        if (response.ok) {
-            const data = await response.json();
-            if (data.loadingMessages && data.loadingMessages.length > 0) {
-                loadingMessages = data.loadingMessages;
-            }
-        }
-    } catch (e) {
-        console.warn('Failed to load loading messages:', e);
-    }
-
-    const loadingMessageEl = document.getElementById('loadingMessage');
-
-    if (loadingMessageEl) {
-        loadingMessageEl.textContent = loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
-    }
 
     window.addEventListener('load', function() {
         setTimeout(function() {
@@ -87,7 +56,7 @@ async function initLoadingScreen() {
             setTimeout(function() {
                 loadingScreen.style.display = 'none';
             }, 500);
-        }, 1500);
+        }, 2000);
     });
 }
 
@@ -173,15 +142,7 @@ function initScrollAnimations() {
     });
 }
 
-let subtitleMessages = [
-    'for epic gamers.',
-    'with caffeine & dreams.',
-    'that make you feel things.',
-    'with extra cheese.',
-    'since 2019!',
-    'loaded with fun.',
-    'with max DPS!'
-];
+let subtitleMessages = [];
 let currentMessageIndex = 0;
 
 async function initTypingEffect() {
@@ -205,21 +166,27 @@ async function initTypingEffect() {
 }
 
 function cycleMessage() {
-    const message = subtitleMessages[currentMessageIndex];
     const titleBreak = document.querySelector('.title-break');
-    if (!titleBreak) return;
+    const cursor = document.querySelector('.typing-cursor');
+    if (!titleBreak || !cursor) return;
+
+    if (subtitleMessages.length === 0) return;
 
     let charIndex = 0;
     let isDeleting = false;
 
     function type() {
+        const message = subtitleMessages[currentMessageIndex];
+        
         if (isDeleting) {
-            titleBreak.childNodes[0].nodeValue = message.substring(0, charIndex - 1);
             charIndex--;
         } else {
-            titleBreak.childNodes[0].nodeValue = message.substring(0, charIndex + 1);
             charIndex++;
         }
+
+        const displayedText = message.substring(0, charIndex);
+        titleBreak.textContent = displayedText;
+        titleBreak.appendChild(cursor);
 
         let typeSpeed = isDeleting ? 20 : 40;
 
