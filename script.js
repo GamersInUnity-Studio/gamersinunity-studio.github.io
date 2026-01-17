@@ -1,8 +1,23 @@
 document.addEventListener("DOMContentLoaded", function() {
+    initLoadingScreen();
     initParticles();
     initMobileMenu();
     initScrollAnimations();
 });
+
+function initLoadingScreen() {
+    const loadingScreen = document.getElementById('loadingScreen');
+    if (!loadingScreen) return;
+
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            loadingScreen.classList.add('fade-out');
+            setTimeout(function() {
+                loadingScreen.style.display = 'none';
+            }, 500);
+        }, 1500);
+    });
+}
 
 function initParticles() {
     const particlesContainer = document.getElementById('particles');
