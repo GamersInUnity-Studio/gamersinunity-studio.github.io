@@ -170,6 +170,11 @@ p {
   height: 50px;
   object-fit: cover;
   border-radius: 8px;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.logo:hover img {
+  transform: rotate(5deg) scale(1.1);
 }
 
 .primary-nav ul {
@@ -204,6 +209,7 @@ p {
 
 .nav-link:hover {
   color: var(--catppuccin-mauve);
+  text-shadow: 0 0 10px var(--catppuccin-mauve);
 }
 
 .nav-link:hover::after {
@@ -265,6 +271,20 @@ p {
   text-shadow: 0 0 60px rgba(203, 166, 247, 0.3);
 }
 
+.hero-title .typing-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  background: var(--catppuccin-mauve);
+  margin-left: 5px;
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
 .title-break {
   display: block;
   font-size: 0.6em;
@@ -303,8 +323,32 @@ p {
   transition: transform 0.3s ease;
 }
 
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(203, 166, 247, 0.4); }
+  50% { box-shadow: 0 0 40px rgba(203, 166, 247, 0.8); }
+}
+
 .cta-button:hover svg {
-  transform: translateX(5px);
+  transform: translateX(5px) translateY(-2px);
+}
+
+.cta-button {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.cta-button:hover {
+  animation: none;
 }
 
 .content-section {
@@ -319,9 +363,13 @@ p {
 }
 
 .content-section:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 15px 50px rgba(203, 166, 247, 0.2);
   border-color: var(--catppuccin-mauve);
+}
+
+.content-section:hover .section-icon {
+  transform: rotate(10deg) scale(1.1);
 }
 
 .section-icon {
@@ -334,6 +382,7 @@ p {
   border-radius: 12px;
   margin-bottom: 1rem;
   color: var(--catppuccin-base);
+  transition: transform 0.3s ease;
 }
 
 .section-icon svg {
@@ -380,9 +429,13 @@ h2 {
 }
 
 .game-button:hover {
-  transform: translateY(-3px);
+  transform: translateY(-3px) scale(1.02);
   border-color: var(--catppuccin-mauve);
   box-shadow: 0 8px 25px rgba(203, 166, 247, 0.3);
+}
+
+.game-button:hover .button-icon {
+  animation: bounce 0.6s ease infinite;
 }
 
 .game-button.steam:hover {
@@ -630,6 +683,19 @@ h2 {
   border: 1px solid var(--catppuccin-surface-highlight);
   border-radius: 4px;
   margin: 0 0.25rem;
+  cursor: help;
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+.hint-subtext kbd:hover {
+  animation: wobble 0.3s ease infinite;
+  background: var(--catppuccin-mauve);
+  color: var(--catppuccin-base);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -651,4 +717,12 @@ h2 {
   .hint-subtext {
     font-size: 0.8rem;
   }
+}
+
+.loading-message {
+  font-size: 0.875rem;
+  color: var(--catppuccin-teal);
+  font-weight: 500;
+  margin-top: 0.5rem;
+  min-height: 1.25rem;
 }

@@ -97,6 +97,18 @@
         width: 120px;
         height: 120px;
         margin-bottom: 2rem;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+      }
+
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px) rotate(-5deg); }
+        75% { transform: translateX(5px) rotate(5deg); }
       }
 
       .error-actions {
@@ -122,21 +134,26 @@
           width: 100%;
           justify-content: center;
         }
+
+        .error-illustration {
+          width: 80px;
+          height: 80px;
+        }
       }
     </style>
   </head>
   <body>
     <div class="particles" id="particles"></div>
     <div class="error-container">
-      <svg class="error-illustration" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-        <circle cx="12" cy="12" r="10"/>
-        <line x1="12" y1="8" x2="12" y2="12"/>
-        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      <svg class="error-illustration" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10" stroke="var(--catppuccin-red)"/>
+        <path d="M15 9l-6 6" stroke="var(--catppuccin-text)"/>
+        <path d="M9 9l6 6" stroke="var(--catppuccin-text)"/>
       </svg>
       <h1 class="error-code">404</h1>
       <h2 class="error-message">Page Not Found</h2>
       <p class="error-description">
-        Oops! The page you're looking for seems to have wandered off into the digital void. Don't worry, even the best games have hidden paths.
+        Oops! The page you're looking for seems to have wandered off into the digital void. Don't worry, even the best games have hidden Easter eggs... <span style="color: var(--catppuccin-mauve);">try pressing <kbd>I</kbd></span>
       </p>
       <div class="error-actions">
         <a href="/" class="cta-button">
@@ -163,36 +180,59 @@
     </footer>
     <script type="text/javascript" src="script.js"></script>
     <script>
+      let pressCount = 0;
+      let lastPressTime = 0;
+
       document.addEventListener('keydown', function(e) {
         if (e.key.toLowerCase() === 'i' && !e.ctrlKey && !e.metaKey && !e.altKey) {
           const hint = document.querySelector('.error-illustration');
+          const now = Date.now();
+
+          if (now - lastPressTime > 1000) {
+            pressCount = 0;
+          }
+          lastPressTime = now;
+          pressCount++;
+
           if (hint) {
-            hint.style.transform = 'scale(1.2)';
-            hint.style.transition = 'transform 0.3s ease';
+            hint.style.animation = 'none';
+            hint.offsetHeight;
+            hint.style.animation = 'shake 0.3s ease';
             setTimeout(() => {
-              hint.style.transform = 'scale(1)';
+              hint.style.animation = 'float 3s ease-in-out infinite';
             }, 300);
           }
+
+          if (pressCount === 5) {
+            const btn = document.querySelector('.cta-button');
+            if (btn) {
+              btn.style.boxShadow = '0 0 30px rgba(203, 166, 247, 0.8)';
+              btn.style.transform = 'scale(1.05)';
+              setTimeout(() => {
+                btn.style.boxShadow = '';
+                btn.style.transform = '';
+              }, 500);
+            }
+            pressCount = 0;
+          }
+
+          if (pressCount === 3) {
+            const desc = document.querySelector('.error-description');
+            if (desc) {
+              desc.innerHTML = 'I see you found the secret! One more press to unlock...';
+            }
+          }
+
           setTimeout(() => {
             window.location.href = '/game/';
           }, 400);
         }
       });
 
-      let pressCount = 0;
-      document.addEventListener('keydown', function(e) {
-        if (e.key.toLowerCase() === 'i') {
-          pressCount++;
-          if (pressCount === 5) {
-            const btn = document.querySelector('.cta-button');
-            if (btn) {
-              btn.style.boxShadow = '0 0 30px rgba(203, 166, 247, 0.8)';
-              setTimeout(() => {
-                btn.style.boxShadow = '';
-              }, 500);
-            }
-            pressCount = 0;
-          }
+      document.querySelector('.error-illustration').addEventListener('click', function() {
+        const desc = document.querySelector('.error-description');
+        if (desc) {
+          desc.innerHTML = 'Hey! No cheating! Use the keyboard like a true gamer. Press <kbd>I</kbd>';
         }
       });
     </script>

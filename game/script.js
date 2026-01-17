@@ -10,6 +10,7 @@ class AsteroidsGame {
     this.highScore = this.loadHighScore();
     this.lives = config.lives.initial;
     this.level = 1;
+    this.gameOverMessages = [];
 
     this.keys = {
       left: false,
@@ -30,10 +31,31 @@ class AsteroidsGame {
     this.init();
   }
 
+  async loadGameOverMessages() {
+    try {
+      const response = await fetch('data/messages.json');
+      if (response.ok) {
+        const data = await response.json();
+        this.gameOverMessages = data.gameOverMessages || [];
+      }
+    } catch (e) {
+      this.gameOverMessages = [];
+    }
+  }
+
   loadHighScore() {
     try {
-      const saved = localStorage.getItem('asteroidsHighScore');
-      return saved ? parseInt(saved, 10) : 0;
+      const name = 'asteroidsHighScore=';
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const cookies = decodedCookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.indexOf(name) === 0) {
+          const value = cookie.substring(name.length);
+          return parseInt(value, 10) || 0;
+        }
+      }
+      return 0;
     } catch (e) {
       return 0;
     }
@@ -41,7 +63,9 @@ class AsteroidsGame {
 
   saveHighScore(score) {
     try {
-      localStorage.setItem('asteroidsHighScore', score.toString());
+      const d = new Date();
+      d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
+      document.cookie = 'asteroidsHighScore=' + score + ';expires=' + d.toUTCString() + ';path=/';
     } catch (e) {
       console.warn('Could not save high score:', e);
     }
@@ -50,6 +74,7 @@ class AsteroidsGame {
   init() {
     this.updateHighScoreDisplay();
     this.setupEventListeners();
+    this.loadGameOverMessages();
     this.startNewGame();
   }
 
@@ -212,12 +237,22 @@ class AsteroidsGame {
     this.gameRunning = false;
     document.getElementById('finalScore').textContent = this.score;
 
+    const messages = this.gameOverMessages.length > 0 ? this.gameOverMessages : [
+      'Better luck next time!',
+      'The void wins...',
+      'Space is harsh, huh?',
+      'Respawn and try again!'
+    ];
+
     if (this.score > this.highScore) {
       this.highScore = this.score;
       this.saveHighScore(this.highScore);
       document.getElementById('newHighScoreText').innerHTML = '<span class="new-high-score">NEW HIGH SCORE!</span>';
+    } else if (this.score > 0) {
+      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+      document.getElementById('newHighScoreText').textContent = randomMessage;
     } else {
-      document.getElementById('newHighScoreText').textContent = `High Score: ${this.highScore}`;
+      document.getElementById('newHighScoreText').textContent = 'At least you tried!';
     }
 
     document.getElementById('gameOverScreen').classList.add('visible');
@@ -356,10 +391,11 @@ class Ship {
     if (isThrusting) {
       ctx.beginPath();
       ctx.moveTo(-10, 0);
-      ctx.lineTo(-20, -5);
+      ctx.lineTo(-25 - Math.random() * 10, -7);
       ctx.moveTo(-10, 0);
-      ctx.lineTo(-20, 5);
-      ctx.strokeStyle = colors.yellow;
+      ctx.lineTo(-25 - Math.random() * 10, 7);
+      ctx.strokeStyle = Math.random() > 0.5 ? colors.yellow : colors.peach;
+      ctx.lineWidth = 3;
       ctx.stroke();
     }
 
@@ -534,6 +570,30 @@ async function initGame() {
   try {
     const loadingFill = document.getElementById('loadingFill');
     const loadingScreen = document.getElementById('loadingScreen');
+    const loadingMessageEl = document.getElementById('loadingMessage');
+
+    const loadingMessages = [
+      'Summoning asteroids...',
+      'Polishing the void...',
+      'Loading pew pew sounds...',
+      ' calibrating warp drive...',
+      'Feeding space cats...',
+      'Spawning enemies...',
+      'Charging lasers...',
+      'Aligning pixels...'
+    ];
+
+    let messageIndex = 0;
+    if (loadingMessageEl) {
+      const messageInterval = setInterval(() => {
+        loadingMessageEl.style.opacity = 0;
+        setTimeout(() => {
+          loadingMessageEl.textContent = loadingMessages[messageIndex];
+          loadingMessageEl.style.opacity = 1;
+          messageIndex = (messageIndex + 1) % loadingMessages.length;
+        }, 200);
+      }, 600);
+    }
 
     loadingFill.style.width = '20%';
 
@@ -570,13 +630,46 @@ async function initGame() {
     setTimeout(() => {
       loadingScreen.style.display = 'none';
       game = new AsteroidsGame(config);
-    }, 200);
+    }, 300);
 
   } catch (error) {
     console.error('Failed to load game configuration:', error);
     document.getElementById('loadingScreen').innerHTML = '<h2>Failed to load game</h2><p>' + error.message + '</p>';
   }
 }
+
+(function() {
+    const gameEasterEggs = [
+        { type: 'log', msg: '%c🚀 ASTEROIDS - Prepare for battle!', style: 'font-size: 16px; font-weight: bold; color: #89dceb;' },
+        { type: 'log', msg: '%cDestroy asteroids. Survive. Repeat.', style: 'color: #cdd6f4;' },
+        { type: 'log', msg: '%cHigh score is saved. Can you beat it?', style: 'color: #f9e2af; font-style: italic;' },
+        { type: 'warn', msg: 'Warning: Asteroids may cause existential crisis.' },
+        { type: 'log', msg: '%c\n    ★  ☆  ★  ☆  ★\n\n', style: 'font-size: 20px; color: #f9e2af;' },
+    ];
+
+    const randomEgg = gameEasterEggs[Math.floor(Math.random() * gameEasterEggs.length)];
+    console[randomEgg.type](randomEgg.msg, randomEgg.style || '');
+
+    window.asteroids = {
+        score: () => game ? game.score : 'Not started',
+        lives: () => game ? game.lives : 'Not started',
+        level: () => game ? game.level : 'Not started',
+        highscore: () => game ? game.highScore : '?',
+        nuke: () => { if (game) { game.asteroids = []; console.log('%c💥 Asteroids destroyed!', 'color: #f38ba8;'); } },
+        godmode: () => { if (game) { game.lives = 9999; console.log('%c👑 God mode activated!', 'color: #cba6f7;'); } },
+        help: () => {
+            console.log('%c🕹️ Asteroids Console Commands:', 'font-weight: bold; color: #89dceb;');
+            console.log('  asteroids.score() - Current score');
+            console.log('  asteroids.lives() - Remaining lives');
+            console.log('  asteroids.level() - Current level');
+            console.log('  asteroids.highscore() - High score');
+            console.log('  asteroids.nuke() - Destroy all asteroids');
+            console.log('  asteroids.godmode() - Infinite lives');
+        }
+    };
+
+    console.log('%c💡 Tip: Type asteroids("help") for commands!', 'color: #94e2d5; font-style: italic;');
+})();
 
 function restartGame() {
   if (game) {

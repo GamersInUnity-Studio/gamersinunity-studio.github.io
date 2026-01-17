@@ -33,6 +33,10 @@ body {
   justify-content: center;
 }
 
+canvas {
+  cursor: url('/assets/cursor.svg') 6 3, crosshair;
+}
+
 .game-header {
   position: absolute;
   top: 1rem;
@@ -223,6 +227,22 @@ body {
   background: linear-gradient(135deg, var(--catppuccin-mauve), var(--catppuccin-pink));
   width: 0%;
   transition: width 0.3s ease;
+}
+
+.loading-message {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: var(--catppuccin-sky);
+  min-height: 1.25rem;
+}
+
+@keyframes pulse-loading {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.loading-message {
+  animation: pulse-loading 1.5s ease-in-out infinite;
 }
 
 @media (max-width: 768px) {
